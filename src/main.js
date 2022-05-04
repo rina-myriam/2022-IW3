@@ -4,6 +4,7 @@ import { setRessources, setRessource, getRessources, getRessource } from './idbH
 
 import { getProducts, getProduct } from './api/products';
 import "./views/app-home";
+import "./views/app-cart";
 
 (async (root) => {
   const skeleton = root.querySelector('.skeleton');
@@ -29,6 +30,7 @@ import "./views/app-home";
 
   const AppHome = main.querySelector('app-home');
   const AppProduct = main.querySelector('app-product');
+  const AppCart = main.querySelector('app-cart');
 
   page('*', (ctx, next) => {
     skeleton.removeAttribute('hidden');
@@ -76,6 +78,16 @@ import "./views/app-home";
     skeleton.setAttribute('hidden', '');
   });
 
+  page('/cart', async () => {
+    await import('./views/app-cart.js');
+
+    AppCart.active = true;
+    skeleton.setAttribute('hidden', '');
+    
+  });
+
   page();
+
+  
 
 })(document.querySelector('#app'));
