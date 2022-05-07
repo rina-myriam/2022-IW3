@@ -1,6 +1,8 @@
 import { openDB } from 'idb';
 
 const STORE_NAME = "Products";
+const CART = "Cart";
+
 export function initDB() {
   return openDB("Nozama", 1, {
     upgrade(db) {
@@ -9,11 +11,28 @@ export function initDB() {
         // The 'id' property of the object will be the key.
         keyPath: "id",
       });
+      // const cart = db.createObjectStore(CART, {
+      //   keypath: "id",
+      // });
       // Create an index on the 'date' property of the objects.
       store.createIndex("id", "id");
       store.createIndex("category", "category");
+      // cart.createIndex("id", "id");
     },
   });
+}
+
+export function initCart(){
+  return openDB("cart", 2, {
+    upgrade(db) {
+      const cart = db.createObjectStore(CART, {
+          keypath: "id",
+      });
+
+      cart.createIndex("id", "id");
+      // cart.createIndex("category", "category");
+    }
+  })
 }
 
 export async function setRessources(data) {
@@ -30,6 +49,7 @@ export async function setRessource(data) {
   const db = await initDB();
   const tx = db.transaction(STORE_NAME, "readwrite");
   await tx.store.put(data);
+  // console.log(data);
   return db.getFromIndex(STORE_NAME, "id", data.id);
 }
 
@@ -52,3 +72,22 @@ export async function unsetRessource(id) {
   const db = await initDB();
   await db.delete(STORE_NAME, id);
 };
+
+
+export async function setRessourcesCart(data) {
+  const db = await initCart();
+  const tx = db.transaction(CART, "readwrite");
+  data.forEach((item) => {
+    tx.cart.put(item);
+  });
+  await tx.done;
+  return db.getAllFromIndex(CART, "id");
+}
+
+export async function getRessourcesCart(){  //Display cart on /cart
+  const db = await initCart();
+  // const tx = db.transaction(CART, "readwrite");
+  console.log("id");
+  console.log(db.getAllFromIndex(CART, "id"));
+  return db.getAllFromIndex(CART, "id");
+}
