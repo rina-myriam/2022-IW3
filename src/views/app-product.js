@@ -24,6 +24,10 @@ export class AppProduct extends Base {
     });
   }
 
+  _clickAddToCart(){
+    setRessourcesCart(this.product);
+  }
+
   render() {
     return html`
       <section class="product">
@@ -44,7 +48,7 @@ export class AppProduct extends Base {
           <p>${this.product.description}</p>
         </main>
 
-        <button>Add to cart</button>
+        <button @click="${this._clickAddToCart}" .product="${this.product}">Add to cart</button>
       </section>
     `;
   }

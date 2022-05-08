@@ -11,13 +11,14 @@ export function initDB() {
         // The 'id' property of the object will be the key.
         keyPath: "id",
       });
-      // const cart = db.createObjectStore(CART, {
-      //   keypath: "id",
-      // });
+      const cart = db.createObjectStore(CART, {
+        keypath: "id",
+      });
       // Create an index on the 'date' property of the objects.
       store.createIndex("id", "id");
       store.createIndex("category", "category");
-      // cart.createIndex("id", "id");
+      cart.createIndex("id", "id");
+      cart.createIndex("product", "product");
     },
   });
 }
@@ -75,19 +76,18 @@ export async function unsetRessource(id) {
 
 
 export async function setRessourcesCart(data) {
-  const db = await initCart();
+  const db = await initDB();
   const tx = db.transaction(CART, "readwrite");
-  data.forEach((item) => {
-    tx.cart.put(item);
-  });
-  await tx.done;
-  return db.getAllFromIndex(CART, "id");
+  await tx.store.put(data);
+  // console.log(data);
+  return db.getFromIndex(CART, "id", data.id);
 }
 
 export async function getRessourcesCart(){  //Display cart on /cart
-  const db = await initCart();
+  const db = await initDB();
   // const tx = db.transaction(CART, "readwrite");
   console.log("id");
   console.log(db.getAllFromIndex(CART, "id"));
   return db.getAllFromIndex(CART, "id");
 }
+
