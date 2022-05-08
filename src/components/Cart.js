@@ -25,7 +25,6 @@ export class Cart extends Base {
         <product-card
           .product="${product}"
         ></product-card>
-        <div><p>"${this.total}"</p></div>
       `);
     }
 
