@@ -39,6 +39,7 @@ export class AppProduct extends Base {
               height="720">
           </figure>
         </header>
+        <button>Add to cart</button>
         <main>
           <h1>${this.product.title}</h1>
           <p>${this.product.description}</p>

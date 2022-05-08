@@ -25,6 +25,7 @@ export class ProductCard extends Base {
 
   render() {
     return html`
+    <button>Add to cart</button>
       <a href="/product/${this.product.id}" class="card">
         <header>
           <figure>
